@@ -26,8 +26,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let manager = Manager::new().await?;
     let _ = tokio::join!(
         bluetooth::start_discover(&manager, cache.clone()),
-        bluetooth::report_device_count(cache.clone()),
-        http::http_server(&config)
+        bluetooth::report_device_count(&config, cache.clone()),
+        http::http_server(&config, cache.clone())
     );
 
     Ok(())
