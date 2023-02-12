@@ -43,7 +43,6 @@ pub async fn http_server(
 
     println!("Starting HTTP server on {}:{}", host, port);
 
-    // returns length of cache as JSON
     HttpServer::new(move || {
         App::new()
             .wrap(actix_web::middleware::Logger::default())
