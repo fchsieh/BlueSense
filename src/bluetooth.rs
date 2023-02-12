@@ -1,9 +1,9 @@
-use std::error::Error;
-use std::time::{ SystemTime, UNIX_EPOCH };
-use futures::stream::StreamExt;
 use btleplug::api::{ Central, CentralEvent, Manager as _, ScanFilter };
 use btleplug::platform::{ Adapter, Manager, PeripheralId };
+use futures::stream::StreamExt;
+use std::error::Error;
 use std::sync::{ Arc, Mutex };
+use std::time::{ SystemTime, UNIX_EPOCH };
 
 type Cache = Arc<Mutex<lru::LruCache<String, u128>>>;
 const REPORT_INTERVAL: u64 = 5;
