@@ -10,6 +10,7 @@ use btleplug::platform::{ Adapter, Manager, PeripheralId };
 
 const MAX_CACHE_SIZE: usize = 100;
 const REPORT_INTERVAL: u64 = 5;
+const EXPIRATION_TIME: u128 = 60 * 1000;
 type Cache = Arc<Mutex<lru::LruCache<String, u128>>>;
 
 async fn get_central(manager: &Manager) -> Adapter {
@@ -42,14 +43,31 @@ async fn start_discover(manager: &Manager, cache: Cache) -> Result<(), Box<dyn E
 
 async fn report_device_count(cache: Cache) {
     loop {
-        println!("Cache size: {}", cache.lock().unwrap().len());
+        // report device count
+        let count = cache.lock().unwrap().len();
+        println!("Device count: {}", count);
         tokio::time::sleep(tokio::time::Duration::from_secs(REPORT_INTERVAL)).await;
+
+        // check if least recently used device is expired
+        let now = SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_millis();
+        let expired = now - EXPIRATION_TIME;
+        // find expired devices
+        let mut cache = cache.lock().unwrap();
+        let expired_keys: Vec<String> = cache
+            .iter()
+            .filter(|(_, &v)| v < expired)
+            .map(|(k, _)| k.clone())
+            .collect();
+        // remove expired devices
+        for key in expired_keys {
+            println!("Removing expired device: {}", key);
+            cache.pop(&key);
+        }
     }
 }
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    //let mut cache = lru::LruCache::new(NonZeroUsize::new(MAX_CACHE_SIZE).unwrap());
     let cache = Arc::new(
         Mutex::new(lru::LruCache::new(NonZeroUsize::new(MAX_CACHE_SIZE).unwrap()))
     );
