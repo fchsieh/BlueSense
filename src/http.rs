@@ -1,6 +1,7 @@
 #[path = "types.rs"]
 mod types;
 
+use actix_cors::Cors;
 use actix_web::{ get, web, App, HttpResponse, HttpServer };
 use json::object;
 use std::error::Error;
@@ -45,6 +46,7 @@ pub async fn http_server(
 
     HttpServer::new(move || {
         App::new()
+            .wrap(Cors::permissive())
             .wrap(actix_web::middleware::Logger::default())
             .app_data(
                 web::Data::new(AppState {

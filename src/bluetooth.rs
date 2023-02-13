@@ -3,9 +3,10 @@ mod types;
 
 use btleplug::api::{ Central, CentralEvent, Manager as _, ScanFilter };
 use btleplug::platform::{ Adapter, Manager, PeripheralId };
+use chrono;
 use futures::stream::StreamExt;
+use md5;
 use std::error::Error;
-
 use std::time::{ SystemTime, UNIX_EPOCH };
 
 pub async fn get_central(manager: &Manager) -> Adapter {
@@ -15,10 +16,11 @@ pub async fn get_central(manager: &Manager) -> Adapter {
 
 pub async fn on_device_discovered(id: &PeripheralId, cache: types::Table) {
     let address = id.to_string();
+    let digest = format!("{:x}", md5::compute(address.as_bytes()));
     // update LRU cache by timestamp
-    let now = SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_millis();
+    let now = chrono::offset::Utc::now().timestamp_millis() as u128;
     let mut cache = cache.lock().unwrap();
-    cache.put(address, now);
+    cache.put(digest, now);
 }
 
 pub async fn start_discover(manager: &Manager, cache: types::Table) -> Result<(), Box<dyn Error>> {

@@ -18,7 +18,7 @@ const Description = () => {
                 <Typography
                     display="inline"
                     fontWeight="fontWeightBold"
-                    variant="h6"
+                    variant="body"
                 >
                     BlueSense (Presence Sensor)
                 </Typography>
@@ -26,9 +26,10 @@ const Description = () => {
                 presence of nearby devices. Utilizing Bluetooth Low Energy
                 technology (BLE), it detects the presence of other devices in
                 real-time, making it perfect for use in a variety of settings
-                such as offices, homes, and libraries. Give it a try and see how
-                it enhances your device tracking experience!
-                <Typography variant="h6">
+                such as offices, homes, and libraries. Please give it a try and
+                let me know what you think!
+                <br />
+                <Typography variant="body">
                     Code available on{":  "}
                     <Link
                         href="https://github.com/fchsieh/BlueSense"

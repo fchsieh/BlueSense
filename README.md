@@ -1,6 +1,6 @@
-# BlueSense - Presence Detection
+# BlueSense - Presence Sensor
 
-BlueSense is a simple Rust application that uses the [btleplug](https://github.com/deviceplug/btleplug) to connect to a Bluetooth Low Energy (BLE) device and detect the number of nearby devices.
+BlueSense is a simple Rust application that uses [btleplug](https://github.com/deviceplug/btleplug) to detect nearby devices.
 The application is designed to be run on a Raspberry Pi Zero and should work on any system that supports Bluetooth and Rust.
 
 ## Start API Server

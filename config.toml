@@ -1,6 +1,6 @@
 [bluetooth]
 expiration = 60 # seconds
-report = 5      # seconds
+report = 30     # seconds
 
 [http]
 host = "0.0.0.0"
