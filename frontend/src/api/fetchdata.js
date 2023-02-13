@@ -3,7 +3,7 @@ import config from "../api.json";
 
 const API_URL = config.API_URL;
 
-const FETCH_INTERVAL = 60000; // 1 minute
+const FETCH_INTERVAL = 5 * 1000; // 5 seconds
 
 const useTableSize = () => {
     const [time, setTime] = useState(0);
